@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>fnordautomation</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="jquery-2.1.3.min.js"></script>
+    <script>
+      function updatePowerinfo()
+      {
+        $.getJSON("/powerinfo/3A41C", function(data) {
+          $('#powerinfo').html(data.watt);
+        });
+      }
+
+      $(document).ready(function() {
+        $('#on').click(function() {
+          $.ajax({
+            url: "/power/3A41C",
+            type: "POST",
+            data: '{"power": "on"}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+          }); 
+        });
+
+        $('#off').click(function() {
+          $.ajax({
+            url: "/power/3A41C",
+            type: "POST",
+            data:  '{"power": "off"}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+          });
+        });
+
+        window.setInterval(updatePowerinfo, 2000);
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <button type="button" id="on">An</button>
+      <button type="button" id="off">Aus</button>
+      <span id="powerinfo">undefined</span>
+    </div>
+  </body>
+</html>
+
